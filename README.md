@@ -5,6 +5,7 @@
 This project builds a machine learning solution to predict loan default risk using loan data (`loan_data.csv`). The goal is to predict if an applicant is likely to default (1) or pay in full (0) based on various financial and loan-specific features. The solution includes data preprocessing, feature engineering, model selection, training, tuning, interpretability via SHAP, and a FastAPI deployment for real-time predictions. 
 
 Key features:
+
 - **Data Preprocessing**: Handles missing values, outliers, and inconsistencies.
 - **Feature Engineering**: Adds derived features like `monthly_payment` and `total_loan_burden`.
 - **Model**: Selects between XGBoost and RandomForest based on performance with hyperparameter tuning via `RandomizedSearchCV`.
@@ -16,12 +17,14 @@ Key features:
 ## Setup and Running the Project
 
 ### Prerequisites
+
 - **Python**: 3.11.6 
 - **Dependencies**: Listed in `requirements.txt`
 - **Ensure data/loan_data.csv is in the project root.**
 
 
 ### Installation
+
 1. **Clone the Repository**:
 
    git clone https://github.com/ChimaCoded/Loan_Default_Predictor.git
@@ -107,7 +110,9 @@ Request: GET http://0.0.0.0:8000/feature_importance
 
 
 ## Approach and Rationale
+
 **Data Preprocessing & Feature Engineering**
+
 Cleaning: There were no missing values for the 500-row loan dataset. However, checks were made available for sake of scalability. Also checked for inconsistent data.
 
 Preprocessing: Applied StandardScaler to numerical features and OneHotEncoder to categorical (employment_status, loan_purpose) to ensures te data is compatible with the models.
@@ -123,19 +128,32 @@ Feature Engineering: After understanding the dataset, some new data was derived 
 Justification: These engineered features helps to enhance predictive power.
 
 **Model Selection**
+
 XGBoost and RandomForest were chosen over models like logistic regression or even neural networks for their ability to handle the small datasets, non-linear patterns and dataa imbalance efficiently. 
 
 XGBoost was selected over RandomForest because of it's gradient boosting which showed higher AUC-ROC with scale_pos_weight, and optimised via RandomizedSearchCV.
 
 
 **Performance Evaluation**
+
 Metrics:
-Final Test Set Metrics: {'roc_auc': 0.6327, 'precision': 0.3529, 'recall': 0.4444, 'f1': 0.3934}
+
+Final Test Set Metrics: 
+{
+'roc_auc': 0.6327, 
+
+'precision': 0.3529,
+
+'recall': 0.4444, 
+
+'f1': 0.3934
+}
 
 ROC-AUC was Chosen becuase it performed and ranked higher than the other metrics across classes.
 
 
 **Interpretability & Business Insights**
+
 SHAP Analysis:
 
 ![shap_feature_importance](https://github.com/user-attachments/assets/32bf4bd6-62b3-4dda-ad04-ae386c4922d3)
@@ -143,11 +161,13 @@ SHAP Analysis:
 This shows the various importance of the features in the performance of the model. 
 
 **Deployment Readiness**
+
 FastAPI: Asynchronous API with various endpoints (/predict, /risk_level, /interpretability, /feature_importance) cover all use cases. It can also be customized to add more endpoints for scalability. 
 
 Logging: INFO-level logs to console to track behavior cleanly.
 
 **Additional Insights**
+
 Challenges: The dataset of 500 rows and 12 columns is quite small and risks overfitting. Also allowed libraries to use limits the extent of using advanced algotrithms for prediction.  
 
 Future Enhancements: 
